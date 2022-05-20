@@ -1,4 +1,4 @@
-package com.pectusfinance.financialrecord.controller;
+package com.pectusfinance.financialrecord.controllers;
 
 
 import com.pectusfinance.financialrecord.dto.response.ApiResponse;
@@ -26,7 +26,7 @@ public class CSVFileController {
 
     private final CSVFileService csvFileService;
 
-    @PostMapping("/upload")
+    @PostMapping("/upload" )
     public ResponseEntity<ApiResponse<CSVResponseDto>> uploadFile(@RequestParam("file") MultipartFile file) {
         String message = "";
 
@@ -43,15 +43,17 @@ public class CSVFileController {
 
                 return ResponseEntity.ok(ApiResponse.<CSVResponseDto>builder()
                         .isSuccessful(true)
-                        .statusMessage("authenticated")
+                        .statusMessage("success")
                         .data(new CSVResponseDto(message,fileDownloadUri))
                         .build()
                 );
 
 
             } catch (Exception e) {
+                log.error("Exception occurred while saving data to DB :: Message:: {}",e.getLocalizedMessage());
+                log.error("Exception occurred while saving data to DB :: Message:: {}",e.toString());
                 message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResponse.<CSVResponseDto>builder()
+                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(ApiResponse.<CSVResponseDto>builder()
                         .isSuccessful(false)
                         .statusMessage("error")
                         .data(new CSVResponseDto(message,""))

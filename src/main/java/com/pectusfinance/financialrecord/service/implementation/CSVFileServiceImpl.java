@@ -21,10 +21,11 @@ public class CSVFileServiceImpl implements CSVFileService {
 
     @Override
     public void saveFileToDB(MultipartFile file) {
+        log.info("About to save file to DB ::File:: {}", file.getOriginalFilename());
         try {
             List<Expanses> tutorials = CSVFileLoaderUtil.readCSVtoList(file.getInputStream());
 
-            log.info("Saving csv data to DB");
+            log.info("Saving csv file :: {} :: to DB",file.getOriginalFilename());
             expansesRepository.saveAll(tutorials);
         } catch (IOException e) {
             log.error("An exception occurred while saving csv to DB ::Message:: {}",e.getMessage());

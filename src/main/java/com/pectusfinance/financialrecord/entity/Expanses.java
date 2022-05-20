@@ -5,12 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -29,7 +30,8 @@ public class Expanses extends BaseEntity {
 
     private BigDecimal amount;
 
-    private Timestamp date;
+    @DateTimeFormat(pattern = "MM/dd/yyyy")
+    private LocalDate date;
 
     @Column(name = "member_name")
     private String memberName;

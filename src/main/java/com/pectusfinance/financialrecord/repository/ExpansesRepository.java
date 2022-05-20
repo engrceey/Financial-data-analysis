@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
+import java.util.Optional;
+
 public interface ExpansesRepository extends JpaRepository<Expanses, Long> {
     @Query(value = "SELECT * FROM expanses e WHERE e.amount >= :field1 or e.member_name = :field2",
     countQuery = "SELECT count(*) FROM expanses",  nativeQuery = true)
@@ -16,6 +19,6 @@ public interface ExpansesRepository extends JpaRepository<Expanses, Long> {
             Pageable pageable
     );
 
-//    @Query(value = "SELECT SUM(amount) FROM expanses" , nativeQuery = true)
-//    Double sumBySelectedField(@Param("field2") String field2);
+    @Query(value = "SELECT SUM(amount) FROM expanses e WHERE e.departments = :field" , nativeQuery = true)
+    Optional<BigDecimal>  sumExpansesByDepartment(@Param("field") String field);
 }

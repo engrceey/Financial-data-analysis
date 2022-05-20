@@ -7,12 +7,10 @@ import com.pectusfinance.financialrecord.service.ExpansesService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -85,6 +83,19 @@ public class ExpansesController {
 
         return ResponseEntity.ok().body(ApiResponse.<List<ExpansesResponseDto>>builder()
                 .data(list)
+                .isSuccessful(true)
+                .statusMessage("success")
+                .build());
+    }
+
+    @GetMapping(path="sum-by-department/{department}")
+    public ResponseEntity<ApiResponse<BigDecimal>> getExpanses(
+            @PathVariable("department") final String departmentName
+    ) {
+        log.info("fetch sum by department");
+        BigDecimal response = expansesService.fetchSumOfExpansesByDepartment(departmentName);
+        return ResponseEntity.ok().body(ApiResponse.<BigDecimal>builder()
+                .data(response)
                 .isSuccessful(true)
                 .statusMessage("success")
                 .build());

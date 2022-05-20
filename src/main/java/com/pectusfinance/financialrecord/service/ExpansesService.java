@@ -3,6 +3,7 @@ package com.pectusfinance.financialrecord.service;
 import com.pectusfinance.financialrecord.dto.response.ExpansesResponseDto;
 import com.pectusfinance.financialrecord.dto.response.PaginatedResponseDto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ExpansesService {
@@ -10,4 +11,5 @@ public interface ExpansesService {
     List<ExpansesResponseDto> fetchExpansesSorted(int start, int limit, String sortBy);
     List<ExpansesResponseDto> fetchExpansesSortedByOneOrMoreFields(int start, int limit, String field1, String field2);
     List<ExpansesResponseDto> filterByAmountOrMemberName(int start, int limit,Double field1, String field2);
+    BigDecimal fetchSumOfExpansesByDepartment(String field);
 }

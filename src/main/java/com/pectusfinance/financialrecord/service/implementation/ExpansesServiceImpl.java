@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Slf4j
@@ -41,11 +42,10 @@ public class ExpansesServiceImpl implements ExpansesService {
 
 
     @Override
-    public List<ExpansesResponseDto> fetchExpansesSorted(int start, int limit, String sortBy)
-    {
+    public List<ExpansesResponseDto> fetchExpansesSorted(int start, int limit, String sortBy) {
         Pageable paging = PageRequest.of(start, limit, Sort.by(sortBy));
         Page<Expanses> pagedResult = expansesRepository.findAll(paging);
-        if(pagedResult.hasContent()) {
+        if (pagedResult.hasContent()) {
             return ModelMapperUtils.mapAll(pagedResult.getContent(), ExpansesResponseDto.class);
         } else {
             throw new ResourceNotFoundException("No expanse info available", HttpStatus.NOT_FOUND);
@@ -53,11 +53,10 @@ public class ExpansesServiceImpl implements ExpansesService {
     }
 
     @Override
-    public List<ExpansesResponseDto> fetchExpansesSortedByOneOrMoreFields(int start, int limit, String field1, String field2)
-    {
+    public List<ExpansesResponseDto> fetchExpansesSortedByOneOrMoreFields(int start, int limit, String field1, String field2) {
         Pageable paging = PageRequest.of(start, limit, Sort.by(Sort.Direction.DESC, field1, field2));
         Page<Expanses> pagedResult = expansesRepository.findAll(paging);
-        if(pagedResult.hasContent()) {
+        if (pagedResult.hasContent()) {
             return ModelMapperUtils.mapAll(pagedResult.getContent(), ExpansesResponseDto.class);
         } else {
             throw new ResourceNotFoundException("No expanse info available", HttpStatus.NOT_FOUND);
@@ -68,13 +67,25 @@ public class ExpansesServiceImpl implements ExpansesService {
     public List<ExpansesResponseDto> filterByAmountOrMemberName(int start, int limit, Double field1, String field2) {
 
         Pageable paging = PageRequest.of(start, limit);
-        Page<Expanses> pagedResult = expansesRepository.filterByOneOrMoreFields(field1,field2,paging);
-        if(pagedResult.hasContent()) {
+        Page<Expanses> pagedResult = expansesRepository.filterByOneOrMoreFields(field1, field2, paging);
+        if (pagedResult.hasContent()) {
             return ModelMapperUtils.mapAll(pagedResult.getContent(), ExpansesResponseDto.class);
         } else {
             throw new ResourceNotFoundException("No expanse info available", HttpStatus.NOT_FOUND);
         }
     }
 
-    
+    @Override
+    public BigDecimal fetchSumOfExpansesByDepartment(String field) {
+        log.info("fetching expenses for :: {} :: department", expansesRepository.sumExpansesByDepartment(field).toString());
+
+        return expansesRepository.sumExpansesByDepartment(field)
+                .orElseThrow(
+                        () -> {
+                            throw new ResourceNotFoundException("No value found for department");
+                        }
+                );
+    }
+
+
 }

@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import springfox.documentation.annotations.Cacheable;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,6 +29,7 @@ public class ExpansesServiceImpl implements ExpansesService {
     private final ExpansesRepository expansesRepository;
 
     @Override
+    @Cacheable("expanses")
     public PaginatedResponseDto<ExpansesResponseDto> fetchExpanses(int start, int limit) {
         Page<Expanses> expanses = expansesRepository.findAll(PageRequest.of(start, limit));
         if (expanses.isEmpty()) {
@@ -42,6 +44,7 @@ public class ExpansesServiceImpl implements ExpansesService {
 
 
     @Override
+    @Cacheable(value = "sortedExpanses")
     public List<ExpansesResponseDto> fetchExpansesSorted(int start, int limit, String sortBy) {
         Pageable paging = PageRequest.of(start, limit, Sort.by(sortBy));
         Page<Expanses> pagedResult = expansesRepository.findAll(paging);
@@ -53,6 +56,7 @@ public class ExpansesServiceImpl implements ExpansesService {
     }
 
     @Override
+    @Cacheable(value = "multiSortedExpanses")
     public List<ExpansesResponseDto> fetchExpansesSortedByOneOrMoreFields(int start, int limit, String field1, String field2) {
         Pageable paging = PageRequest.of(start, limit, Sort.by(Sort.Direction.DESC, field1, field2));
         Page<Expanses> pagedResult = expansesRepository.findAll(paging);
@@ -64,6 +68,7 @@ public class ExpansesServiceImpl implements ExpansesService {
     }
 
     @Override
+    @Cacheable(value = "filteredExpanses")
     public List<ExpansesResponseDto> filterByAmountOrMemberName(int start, int limit, Double field1, String field2) {
 
         Pageable paging = PageRequest.of(start, limit);

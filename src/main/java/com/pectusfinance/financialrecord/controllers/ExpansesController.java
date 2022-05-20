@@ -29,7 +29,7 @@ public class ExpansesController {
             notes = "Returns a list of paginated expanses ",
             response = ExpansesResponseDto.class
     )
-    @GetMapping(path="expanses")
+    @GetMapping(path="expanses", produces = "application/json")
     public ResponseEntity<ApiResponse<PaginatedResponseDto<ExpansesResponseDto>>> getExpanses(
             @RequestParam(defaultValue = "0") final int start,
             @RequestParam(defaultValue = "10") final int limit
@@ -48,7 +48,7 @@ public class ExpansesController {
             notes = "Returns a list of paginated expanses sorted by a field",
             response = ExpansesResponseDto.class
     )
-    @GetMapping(path="sorted-expanses")
+    @GetMapping(path="sorted-expanses", produces = "application/json")
     public ResponseEntity<ApiResponse<List<ExpansesResponseDto>>> getExpansesSorted(
             @RequestParam(defaultValue = "0") final int start,
             @RequestParam(defaultValue = "10") final int limit,
@@ -69,7 +69,7 @@ public class ExpansesController {
             notes = "Returns a list of paginated Expanses filtered by amount OR two field",
             response = ExpansesResponseDto.class
     )
-    @GetMapping(path="filter-expanses")
+    @GetMapping(path="filter-expanses", produces = "application/json")
     public ResponseEntity<ApiResponse<List<ExpansesResponseDto>>> filterExpansesByMultiFields(
             @Valid
             @RequestParam(defaultValue = "0") final Integer start,

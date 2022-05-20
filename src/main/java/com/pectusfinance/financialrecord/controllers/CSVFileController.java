@@ -5,6 +5,7 @@ import com.pectusfinance.financialrecord.dto.response.ApiResponse;
 import com.pectusfinance.financialrecord.dto.response.CSVResponseDto;
 import com.pectusfinance.financialrecord.service.CSVFileService;
 import com.pectusfinance.financialrecord.utils.CSVFileLoaderUtil;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,11 @@ public class CSVFileController {
 
     private final CSVFileService csvFileService;
 
+    @ApiOperation(
+            value = "Read expanses CSV file",
+            notes = "Extracts CSV file data to the DB",
+            response = CSVResponseDto.class
+    )
     @PostMapping("/upload" )
     public ResponseEntity<ApiResponse<CSVResponseDto>> uploadFile(@RequestParam("file") MultipartFile file) {
         String message = "";

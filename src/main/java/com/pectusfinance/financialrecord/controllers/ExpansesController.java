@@ -4,6 +4,7 @@ import com.pectusfinance.financialrecord.dto.response.ApiResponse;
 import com.pectusfinance.financialrecord.dto.response.ExpansesResponseDto;
 import com.pectusfinance.financialrecord.dto.response.PaginatedResponseDto;
 import com.pectusfinance.financialrecord.service.ExpansesService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,12 @@ public class ExpansesController {
 
     private final ExpansesService expansesService;
 
+
+    @ApiOperation(
+            value = "Get expanses",
+            notes = "Returns a list of paginated expanses ",
+            response = ExpansesResponseDto.class
+    )
     @GetMapping(path="expanses")
     public ResponseEntity<ApiResponse<PaginatedResponseDto<ExpansesResponseDto>>> getExpanses(
             @RequestParam(defaultValue = "0") final int start,
@@ -35,6 +42,12 @@ public class ExpansesController {
                 .build());
     }
 
+
+    @ApiOperation(
+            value = "Get expanses sorted by a field",
+            notes = "Returns a list of paginated expanses sorted by a field",
+            response = ExpansesResponseDto.class
+    )
     @GetMapping(path="sorted-expanses")
     public ResponseEntity<ApiResponse<List<ExpansesResponseDto>>> getExpansesSorted(
             @RequestParam(defaultValue = "0") final int start,
@@ -50,6 +63,12 @@ public class ExpansesController {
                 .build());
     }
 
+
+    @ApiOperation(
+            value = "Get filtered expanses by amount OR member name",
+            notes = "Returns a list of paginated Expanses filtered by amount OR two field",
+            response = ExpansesResponseDto.class
+    )
     @GetMapping(path="filter-expanses")
     public ResponseEntity<ApiResponse<List<ExpansesResponseDto>>> filterExpansesByMultiFields(
             @Valid
@@ -69,7 +88,13 @@ public class ExpansesController {
                 .build());
     }
 
-    @GetMapping(path="multi-sort-expanses")
+
+    @ApiOperation(
+            value = "Get expanses sorted by one OR two field",
+            notes = "Returns a list of paginated Expanses sorted by one OR two fields",
+            response = ExpansesResponseDto.class
+    )
+    @GetMapping(path="multi-sort-expanses", produces = "application/json")
     public ResponseEntity<ApiResponse<List<ExpansesResponseDto>>> getExpansesSortedByOneOrMoreFields(
             @RequestParam(defaultValue = "0") final Integer start,
             @RequestParam(defaultValue = "10") final Integer limit,
@@ -88,7 +113,12 @@ public class ExpansesController {
                 .build());
     }
 
-    @GetMapping(path="sum-by-department/{department}")
+    @ApiOperation(
+            value = "Get sum of expanses by selected department",
+            notes = "Returns the sum of expanses by the selected department",
+            response = BigDecimal.class
+    )
+    @GetMapping(path="sum-by-department/{department}", produces = "application/json")
     public ResponseEntity<ApiResponse<BigDecimal>> getExpanses(
             @PathVariable("department") final String departmentName
     ) {

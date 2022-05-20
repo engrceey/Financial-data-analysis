@@ -9,4 +9,5 @@ public interface ExpansesService {
     PaginatedResponseDto<ExpansesResponseDto> fetchExpanses(int start, int limit);
     List<ExpansesResponseDto> fetchExpansesSorted(int start, int limit, String sortBy);
     List<ExpansesResponseDto> fetchExpansesSortedByOneOrMoreFields(int start, int limit, String field1, String field2);
+    List<ExpansesResponseDto> filterByAmountOrMemberName(int start, int limit,Double field1, String field2);
 }

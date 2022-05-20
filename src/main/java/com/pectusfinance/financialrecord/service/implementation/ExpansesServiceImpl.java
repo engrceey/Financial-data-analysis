@@ -64,4 +64,17 @@ public class ExpansesServiceImpl implements ExpansesService {
         }
     }
 
+    @Override
+    public List<ExpansesResponseDto> filterByAmountOrMemberName(int start, int limit, Double field1, String field2) {
+
+        Pageable paging = PageRequest.of(start, limit);
+        Page<Expanses> pagedResult = expansesRepository.filterByOneOrMoreFields(field1,field2,paging);
+        if(pagedResult.hasContent()) {
+            return ModelMapperUtils.mapAll(pagedResult.getContent(), ExpansesResponseDto.class);
+        } else {
+            throw new ResourceNotFoundException("No expanse info available", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    
 }

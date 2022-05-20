@@ -82,7 +82,7 @@ public class ExpansesServiceImpl implements ExpansesService {
         return expansesRepository.sumExpansesByDepartment(field)
                 .orElseThrow(
                         () -> {
-                            throw new ResourceNotFoundException("No value found for department");
+                            throw new ResourceNotFoundException("No value found for "+field+" department");
                         }
                 );
     }

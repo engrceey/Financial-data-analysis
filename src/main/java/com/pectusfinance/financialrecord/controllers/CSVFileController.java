@@ -34,7 +34,7 @@ public class CSVFileController {
             try {
                 csvFileService.saveFileToDB(file);
 
-                message = "Uploaded the file successfully: " + file.getOriginalFilename();
+                message = "file uploaded successfully: " + file.getOriginalFilename();
 
                 String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                         .path("/api/csv/download/")

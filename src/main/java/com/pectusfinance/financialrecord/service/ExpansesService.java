@@ -1,7 +1,8 @@
 package com.pectusfinance.financialrecord.service;
 
-import org.springframework.web.multipart.MultipartFile;
+import com.pectusfinance.financialrecord.dto.response.ExpansesResponseDto;
+import com.pectusfinance.financialrecord.dto.response.PaginatedResponseDto;
 
 public interface ExpansesService {
-    void saveFileToDB(MultipartFile file);
+    PaginatedResponseDto<ExpansesResponseDto> fetchExpanses(int start, int limit);
 }

@@ -54,7 +54,7 @@ public class CSVFileLoaderUtil {
                         .memberName(csvRecord.get("member_name"))
                         .departments(csvRecord.get("departments"))
                         .projectName(csvRecord.get("project_name"))
-                        .date(LocalDate.parse( csvRecord.get("date"), formatter))
+                        .date(LocalDate.parse(csvRecord.get("date"), formatter))
                         .build();
 
                 expansesList.add(expanses);

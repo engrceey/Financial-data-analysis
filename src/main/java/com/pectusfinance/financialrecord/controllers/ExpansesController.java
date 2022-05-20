@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -25,8 +26,8 @@ public class ExpansesController {
 
     @GetMapping(path="expanses")
     public ResponseEntity<ApiResponse<PaginatedResponseDto<ExpansesResponseDto>>> getExpanses(
-            @RequestParam(defaultValue = "0") int start,
-            @RequestParam(defaultValue = "10") int limit
+            @RequestParam(defaultValue = "0") final int start,
+            @RequestParam(defaultValue = "10") final int limit
     ) {
         PaginatedResponseDto<ExpansesResponseDto> response = expansesService.fetchExpanses(start, limit);
         return ResponseEntity.ok().body(ApiResponse.<PaginatedResponseDto<ExpansesResponseDto>>builder()
@@ -38,9 +39,9 @@ public class ExpansesController {
 
     @GetMapping(path="sorted-expanses")
     public ResponseEntity<ApiResponse<List<ExpansesResponseDto>>> getExpansesSorted(
-            @RequestParam(defaultValue = "0") Integer start,
-            @RequestParam(defaultValue = "10") Integer limit,
-            @RequestParam(defaultValue = "departments") String sortBy)
+            @RequestParam(defaultValue = "0") final int start,
+            @RequestParam(defaultValue = "10") final int limit,
+            @RequestParam(defaultValue = "departments") final String sortBy)
     {
         List<ExpansesResponseDto> list = expansesService.fetchExpansesSorted(start, limit, sortBy);
 
@@ -51,12 +52,31 @@ public class ExpansesController {
                 .build());
     }
 
+    @GetMapping(path="filter-expanses")
+    public ResponseEntity<ApiResponse<List<ExpansesResponseDto>>> filterExpansesByMultiFields(
+            @Valid
+            @RequestParam(defaultValue = "0") final Integer start,
+            @RequestParam(defaultValue = "10") final Integer limit,
+            @RequestParam("amount") final Double field1,
+            @RequestParam("member_name") final String field2)
+
+    {
+        List<ExpansesResponseDto> list = expansesService.filterByAmountOrMemberName(
+                start, limit, field1, field2);
+
+        return ResponseEntity.ok().body(ApiResponse.<List<ExpansesResponseDto>>builder()
+                .data(list)
+                .isSuccessful(true)
+                .statusMessage("success")
+                .build());
+    }
+
     @GetMapping(path="multi-sort-expanses")
     public ResponseEntity<ApiResponse<List<ExpansesResponseDto>>> getExpansesSortedByOneOrMoreFields(
-            @RequestParam(defaultValue = "0") Integer start,
-            @RequestParam(defaultValue = "10") Integer limit,
-            @RequestParam(defaultValue = "departments") String field1,
-            @RequestParam(defaultValue = "projectName") String field2
+            @RequestParam(defaultValue = "0") final Integer start,
+            @RequestParam(defaultValue = "10") final Integer limit,
+            @RequestParam(defaultValue = "departments") final String field1,
+            @RequestParam(defaultValue = "projectName") final String field2
         )
     {
         List<ExpansesResponseDto> list = expansesService.fetchExpansesSortedByOneOrMoreFields(

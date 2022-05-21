@@ -2,7 +2,8 @@ package com.pectusfinance.financialrecord.service.implementation;
 
 import com.pectusfinance.financialrecord.dto.response.ExpansesResponseDto;
 import com.pectusfinance.financialrecord.dto.response.PaginatedResponseDto;
-import com.pectusfinance.financialrecord.entity.Expanses;
+import com.pectusfinance.financialrecord.dto.response.SparseDataResponseDto;
+import com.pectusfinance.financialrecord.entity.Expanse;
 import com.pectusfinance.financialrecord.exceptions.CustomException;
 import com.pectusfinance.financialrecord.exceptions.ResourceNotFoundException;
 import com.pectusfinance.financialrecord.repository.ExpansesRepository;
@@ -31,7 +32,8 @@ public class ExpansesServiceImpl implements ExpansesService {
     @Override
     @Cacheable("expanses")
     public PaginatedResponseDto<ExpansesResponseDto> fetchExpanses(int start, int limit) {
-        Page<Expanses> expanses = expansesRepository.findAll(PageRequest.of(start, limit));
+        log.info("fetching expanses from :: {} :: to :: {} ::", start, limit);
+        Page<Expanse> expanses = expansesRepository.findAll(PageRequest.of(start, limit));
         if (expanses.isEmpty()) {
             throw new CustomException("No expanse info available", HttpStatus.NO_CONTENT);
         }
@@ -46,8 +48,9 @@ public class ExpansesServiceImpl implements ExpansesService {
     @Override
     @Cacheable(value = "sortedExpanses")
     public List<ExpansesResponseDto> fetchExpansesSorted(int start, int limit, String sortBy) {
+        log.info("fetching expanses from :: {} :: to :: {} :: sorted by :: {}", start, limit, sortBy);
         Pageable paging = PageRequest.of(start, limit, Sort.by(sortBy));
-        Page<Expanses> pagedResult = expansesRepository.findAll(paging);
+        Page<Expanse> pagedResult = expansesRepository.findAll(paging);
         if (pagedResult.hasContent()) {
             return ModelMapperUtils.mapAll(pagedResult.getContent(), ExpansesResponseDto.class);
         } else {
@@ -58,8 +61,9 @@ public class ExpansesServiceImpl implements ExpansesService {
     @Override
     @Cacheable(value = "multiSortedExpanses")
     public List<ExpansesResponseDto> fetchExpansesSortedByOneOrMoreFields(int start, int limit, String field1, String field2) {
+        log.info("fetching expanses from :: {} :: to :: {} :: and multi sorted", start, limit);
         Pageable paging = PageRequest.of(start, limit, Sort.by(Sort.Direction.DESC, field1, field2));
-        Page<Expanses> pagedResult = expansesRepository.findAll(paging);
+        Page<Expanse> pagedResult = expansesRepository.findAll(paging);
         if (pagedResult.hasContent()) {
             return ModelMapperUtils.mapAll(pagedResult.getContent(), ExpansesResponseDto.class);
         } else {
@@ -70,9 +74,9 @@ public class ExpansesServiceImpl implements ExpansesService {
     @Override
     @Cacheable(value = "filteredExpanses")
     public List<ExpansesResponseDto> filterByAmountOrMemberName(int start, int limit, Double field1, String field2) {
-
+        log.info("fetching expanses from :: {} :: to :: {} :: and filtered", start, limit);
         Pageable paging = PageRequest.of(start, limit);
-        Page<Expanses> pagedResult = expansesRepository.filterByOneOrMoreFields(field1, field2, paging);
+        Page<Expanse> pagedResult = expansesRepository.filterByOneOrMoreFields(field1, field2, paging);
         if (pagedResult.hasContent()) {
             return ModelMapperUtils.mapAll(pagedResult.getContent(), ExpansesResponseDto.class);
         } else {
@@ -83,13 +87,25 @@ public class ExpansesServiceImpl implements ExpansesService {
     @Override
     public BigDecimal fetchSumOfExpansesByDepartment(String field) {
         log.info("fetching expenses for :: {} :: department", expansesRepository.sumExpansesByDepartment(field).toString());
-
         return expansesRepository.sumExpansesByDepartment(field)
                 .orElseThrow(
                         () -> {
-                            throw new ResourceNotFoundException("No value found for "+field+" department");
+                            throw new ResourceNotFoundException("No value found for " + field + " department");
                         }
                 );
+    }
+
+    @Override
+    public SparseDataResponseDto fetchExpansesById(long id) {
+        log.info("fetching record for id :: {}", id);
+        return ModelMapperUtils.map(expansesRepository.findById(id)
+                .orElseThrow(
+                        () -> {
+                            throw new ResourceNotFoundException("No record found for id::" + id);
+                        }
+                )
+                ,SparseDataResponseDto.class);
+
     }
 
 

@@ -20,7 +20,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @SuperBuilder
 @Table(name = "expanses")
-public class Expanses extends BaseEntity {
+public class Expanse extends BaseEntity {
 
     @Column(name = "departments")
     private String departments;

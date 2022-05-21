@@ -1,6 +1,6 @@
 package com.pectusfinance.financialrecord.utils;
 
-import com.pectusfinance.financialrecord.entity.Expanses;
+import com.pectusfinance.financialrecord.entity.Expanse;
 import com.pectusfinance.financialrecord.exceptions.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
@@ -12,7 +12,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -31,13 +30,13 @@ public class CSVFileLoaderUtil {
                 || Objects.equals(file.getContentType(), "application/vnd.ms-excel");
     }
 
-    public static List<Expanses> readCSVtoList(InputStream is) {
+    public static List<Expanse> readCSVtoList(InputStream is) {
         log.info("CSV Reader helper... saving file");
         try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
              CSVParser csvParser = new CSVParser(fileReader,
                      CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());) {
 
-            List<Expanses> expansesList = new ArrayList<>();
+            List<Expanse> expansesList = new ArrayList<>();
 
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
 
@@ -49,8 +48,8 @@ public class CSVFileLoaderUtil {
             );
 
             for (CSVRecord csvRecord : csvRecords) {
-                Expanses expanses = Expanses.builder()
-                        .amount(new BigDecimal(csvRecord.get("amount").replace("€", "").replaceAll(",", "")))
+                Expanse expanses = Expanse.builder()
+                        .amount(new java.math.BigDecimal(csvRecord.get("amount").replace("€", "").replaceAll(",", "")))
                         .memberName(csvRecord.get("member_name"))
                         .departments(csvRecord.get("departments"))
                         .projectName(csvRecord.get("project_name"))

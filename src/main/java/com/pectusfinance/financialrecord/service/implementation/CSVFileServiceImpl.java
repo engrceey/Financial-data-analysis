@@ -1,6 +1,6 @@
 package com.pectusfinance.financialrecord.service.implementation;
 
-import com.pectusfinance.financialrecord.entity.Expanses;
+import com.pectusfinance.financialrecord.entity.Expanse;
 import com.pectusfinance.financialrecord.repository.ExpansesRepository;
 import com.pectusfinance.financialrecord.service.CSVFileService;
 import com.pectusfinance.financialrecord.utils.CSVFileLoaderUtil;
@@ -25,7 +25,7 @@ public class CSVFileServiceImpl implements CSVFileService {
     public void saveFileToDB(MultipartFile file) {
         log.info("About to save file to DB ::File:: {}", file.getOriginalFilename());
         try {
-            List<Expanses> tutorials = CSVFileLoaderUtil.readCSVtoList(file.getInputStream());
+            List<Expanse> tutorials = CSVFileLoaderUtil.readCSVtoList(file.getInputStream());
 
             log.info("Saving csv file :: {} :: to DB",file.getOriginalFilename());
             expansesRepository.saveAll(tutorials);

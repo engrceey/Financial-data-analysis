@@ -31,7 +31,7 @@ public class SwaggerConfig {
     {
         return new ApiInfo(
                 "Pectus Expanses Applcation API",
-                "this application service helps in analysing financial records",
+                "This Application Helps In Analysing Financial Records",
                 "1.0",
                 "Terms of Server",
                 new Contact("My LinkedIn Account", "https://www.linkedin.com/in/zurum-ogbonda/", "zurumogbonda@gmail.com"),

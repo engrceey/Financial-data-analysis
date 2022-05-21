@@ -5,7 +5,7 @@ Pectus Finance Data Analysis Application provides Rest API endpoints for reading
 and retrieve datas based on certain criterias and can also perform sum aggregation operation based on
 input parameter.
 
-## Application main Functionality
+### Application Functionalities
 * Read CSV file to Database
 * Clean fields of csv file before insertion
 * Ability to sort data by selected field
@@ -13,11 +13,9 @@ input parameter.
 * Perform sum aggregation on data
 * Select sparse data record
 
-## How to Run Locally
+### How to Run Locally
 Clone application: git@github.com:engrceey/Financial-data-analysis.git
 From any suitable IDE (IntelliJ Recommended) and with Java installed (Java 8 and Above) run application
-
-## Run with Docker
 
 
 **Swagger Documentation** available at :: http://localhost:9091/api/v1/swagger-ui/#/
@@ -25,7 +23,7 @@ From any suitable IDE (IntelliJ Recommended) and with Java installed (Java 8 and
 pass-word: sa
 user name: sa
 
-## Technology Used:
+### Technology Used:
 * Java
 * SpringBoot
 * Swagger Docs

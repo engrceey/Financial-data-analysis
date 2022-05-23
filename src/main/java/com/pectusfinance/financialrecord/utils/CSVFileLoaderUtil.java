@@ -50,9 +50,9 @@ public class CSVFileLoaderUtil {
             for (CSVRecord csvRecord : csvRecords) {
                 Expanse expanses = Expanse.builder()
                         .amount(new java.math.BigDecimal(csvRecord.get("amount").replace("€", "").replaceAll(",", "")))
-                        .memberName(csvRecord.get("member_name"))
-                        .departments(csvRecord.get("departments"))
-                        .projectName(csvRecord.get("project_name"))
+                        .memberName(csvRecord.get("member_name").toLowerCase())
+                        .departments(csvRecord.get("departments").toLowerCase())
+                        .projectName(csvRecord.get("project_name").toLowerCase())
                         .date(LocalDate.parse(csvRecord.get("date"), formatter))
                         .build();
 

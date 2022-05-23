@@ -57,7 +57,7 @@ public class ExpansesController {
              @RequestParam(defaultValue = "memberName", required = false) final String sortBy)
     {
         log.info("initiate request fetch from :: {} :: to :: {} :: sorted by {}", start, limit, sortBy);
-        List<ExpansesResponseDto> list = expansesService.fetchExpansesSorted(start, limit, sortBy);
+        List<ExpansesResponseDto> list = expansesService.fetchExpansesSorted(start, limit, sortBy.toLowerCase());
 
         return ResponseEntity.ok().body(ApiResponse.<List<ExpansesResponseDto>>builder()
                 .data(list)
@@ -82,7 +82,7 @@ public class ExpansesController {
     {
         log.info("initiate request fetch from :: {} :: to :: {} :: filtered", start, limit);
         List<ExpansesResponseDto> list = expansesService.filterByAmountOrMemberName(
-                start, limit, field1, field2);
+                start, limit, field1, field2.toLowerCase());
 
         return ResponseEntity.ok().body(ApiResponse.<List<ExpansesResponseDto>>builder()
                 .data(list)
@@ -107,7 +107,7 @@ public class ExpansesController {
     {
         log.info("initiate request fetch from :: {} :: to :: {} :: multi filtered", start, limit);
         List<ExpansesResponseDto> list = expansesService.fetchExpansesSortedByOneOrMoreFields(
-                start, limit, field1, field2
+                start, limit, field1.toLowerCase(), field2.toLowerCase()
         );
 
         return ResponseEntity.ok().body(ApiResponse.<List<ExpansesResponseDto>>builder()
@@ -127,7 +127,7 @@ public class ExpansesController {
            @Valid @PathVariable("department") final String departmentName
     ) {
         log.info("fetch sum by department");
-        BigDecimal response = expansesService.fetchSumOfExpansesByDepartment(departmentName);
+        BigDecimal response = expansesService.fetchSumOfExpansesByDepartment(departmentName.toLowerCase());
         return ResponseEntity.ok().body(ApiResponse.<BigDecimal>builder()
                 .data(response)
                 .isSuccessful(true)

@@ -6,7 +6,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ExpansesServiceTest {
 
-
+    /*
+        TO DO -: Write Unit Test
+     */
 
     @Test
     void fetchExpanses() {
@@ -26,5 +28,9 @@ class ExpansesServiceTest {
 
     @Test
     void fetchSumOfExpansesByDepartment() {
+    }
+
+    @Test
+    void fetchExpansesById() {
     }
 }
